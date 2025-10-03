@@ -8,11 +8,36 @@
 import SwiftUI
 
 struct DetailedView: View {
+    let user: User
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading, spacing: 8) {
+            Spacer()
+            Text(user.name)
+                .font(.title)
+            Text("Email: \(user.email)")
+            Text("Company: \(user.company)")
+            Text("Age: \(user.age)")
+            Spacer()
+            Text("Friends: ")
+            ForEach(user.friends) { friend in
+                Text(friend.name)
+            }
+            Spacer()
+        }
     }
 }
 
 #Preview {
-    DetailedView()
+    DetailedView(user: User(
+        id: UUID(),
+        name: "Test User",
+        age: 30,
+        company: "Example Co",
+        email: "test@example.com",
+        isActive: true,
+        friends: [
+            Friend(id: UUID(), name: "Test Two")
+        ]
+    ))
 }
