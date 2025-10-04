@@ -11,25 +11,21 @@ struct ContentView: View {
     @State private var users: [User] = []
     
     var body: some View {
-        NavigationStack {
-            List(users) { user in
-                NavigationLink(value: user) {
-                    VStack(alignment: .leading) {
-                        Text(user.name)
-                            .font(.headline)
-                        Text(user.isActive ? "Online" : "Offline")
-                            .foregroundStyle(.secondary)
-                            .foregroundColor(user.isActive ? .green : .red)
-                    }
+        TabView {
+            Tab("Users", systemImage: "person") {
+                NavigationStack {
+                    HomeView(user: users)
+                }
+                .task {
+                    await loadData()
                 }
             }
-            .navigationTitle("Users")
-            .navigationDestination(for: User.self) { user in
-                DetailedView(user: user)
+            Tab("Search", systemImage: "magnifyingglass") {
+                SearchView(user: users)
             }
-        }
-        .task {
-            await loadData()
+            Tab("Settings", systemImage: "gear") {
+                SettingsView()
+            }
         }
     }
     
